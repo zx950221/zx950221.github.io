@@ -3,8 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>中国旅游目的地</title>
+    <title>中国旅游主题</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- 引入霞鹜文楷书法字体 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.1.0/style.css">
+    <style>
+        /* 添加中文副标题样式 */
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-top: 10px;
+            opacity: 0.85;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            font-family: "LXGW WenKai", sans-serif; /* 应用霞鹜文楷字体 */
+        }
+        
+        /* 修改主标题样式 */
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            font-weight: 700;
+        }
+
+        /* 添加英文介绍标题样式 */
+        .intro-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            font-style: italic;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.4;
+        }
+        
+        /* 详情页中的中文标题也应用书法字体 */
+        .details-text h2 + .subtitle {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -30,7 +67,7 @@
                 </svg>
             </div>
             <ul class="menu">
-                <li><a href="#">旅游线路</a></li>
+                <li><a href="#" id="priceMenuBtn">服务价格</a></li>
                 <li><a href="#">博客</a></li>
                 <li><a href="#">关于我们</a></li>
                 <li><a href="#">联系我们</a></li>
@@ -38,94 +75,292 @@
         </nav>
     </header>
 
+    <!-- 添加价格展示窗口 -->
+    <div class="price-window" id="priceWindow">
+        <div class="price-content">
+            <div class="price-header">
+                <h2>探索之旅 - 服务价格</h2>
+                <button class="price-close-btn" id="priceCloseBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="price-grid">
+                <div class="price-card">
+                    <div class="price-card-header">
+                        <h3>文化探索</h3>
+                        <div class="price">¥3,999<span>/人起</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li>专业导游全程陪同</li>
+                        <li>深度文化体验活动</li>
+                        <li>特色民宿/精品酒店住宿</li>
+                        <li>地道美食品鉴</li>
+                        <li>定制化行程规划</li>
+                    </ul>
+                    <button class="price-action-btn">立即预订</button>
+                </div>
+                
+                <div class="price-card featured">
+                    <div class="price-card-header">
+                        <h3>奢华定制</h3>
+                        <div class="price">¥9,999<span>/人起</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li>私人定制专家全程服务</li>
+                        <li>五星级酒店/特色度假村</li>
+                        <li>独家文化体验活动</li>
+                        <li>米其林餐厅预订服务</li>
+                        <li>专车接送服务</li>
+                        <li>VIP通道预约</li>
+                    </ul>
+                    <button class="price-action-btn">立即预订</button>
+                </div>
+                
+                <div class="price-card">
+                    <div class="price-card-header">
+                        <h3>休闲体验</h3>
+                        <div class="price"><del>$50</del> $10<span>/trip</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li>基础行程规划</li>
+                        <li>精美住宿推荐</li>
+                        <li>特色美食推荐</li>
+                        <li>节省预算帮助</li>
+                        <li>便捷旅游计划搭建</li>
+                        <li>12小时在线客服</li>
+                    </ul>
+                    <button class="price-action-btn">立即预订</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main>
-        <section class="destination active" id="chengdu">
-            <div class="bg-image" style="background-image: url('img/成都.jpg');"></div>
+        <!-- 1. 千年遗存主题 -->
+        <section class="destination active" id="heritage">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back1.mp4" type="video/mp4">
+                </video>
+            </div>
             <div class="content">
-                <h1>成都</h1>
+                <h1>Heritage</h1>
+                <div class="subtitle">千年遗存</div>
                 <div class="button-group">
-                    <button class="details-btn">查看详情</button>
-                    <button class="custom-btn">定制行程</button>
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
                 </div>
             </div>
             <div class="details-page">
                 <div class="details-content">
                     <div class="details-text">
-                        <h2>成都</h2>
-                        <p>成都，四川省省会，中国西南地区重要的中心城市。这座城市拥有丰富的自然和人文景观，以其悠闲的生活方式和独特的美食文化而闻名。</p>
-                        <p>这里是熊猫的家乡，成都大熊猫繁育研究基地是世界著名的大熊猫保护中心。宽窄巷子的传统建筑展示了成都的历史风貌，武侯祠则是缅怀三国文化的重要场所。</p>
-                        <p>成都的美食文化丰富多彩，火锅、川菜、小吃等都是不可错过的美食体验。这座城市还保留着传统的茶馆文化，人们可以在这里喝茶、听曲、下棋，体验真正的慢生活。</p>
-                        <button class="back-btn">返回</button>
+                        <h2>Heritage</h2>
+                        <p class="subtitle">千年遗存</p>
+                        <p class="intro-title">"Conversing with Timeless Civilizations"</p>
+                        <p>As the sundial needle in Beijing's Forbidden City marks 600 years, Sanxingdui's bronze trees still whisper unsolved mysteries. Copy Tang Dynasty murals under Bodhisattva gazes in Mogao Cave 45, trace oracle bone scripts in Yinxu's archival vaults.</p>
+                        <p>Hear Shanxi merchants' global ambitions in Pingyao's abacus clicks, decode Hakka wisdom within Fujian tulou's rammed earth walls. These eternal cultural coordinates await your awakening touch.</p>
+                        <button class="back-btn">Back</button>
                     </div>
                     <div class="details-gallery">
                         <div class="gallery-container">
-                            <div class="gallery-item" style="background-image: url('img/成都详情/成都旅游｜2025人气景点和路线，一篇看完_2_风追着云跑_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/成都详情/成都旅游｜2025人气景点和路线，一篇看完_4_风追着云跑_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/成都详情/成都旅游｜2025人气景点和路线，一篇看完_6_风追着云跑_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/成都详情/成都旅游｜2025人气景点和路线，一篇看完_8_风追着云跑_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/成都详情/成都旅游｜2025人气景点和路线，一篇看完_10_风追着云跑_来自小红书网页版.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/heritage详情/heritage_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/heritage详情/heritage_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/heritage详情/heritage_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/heritage详情/heritage_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/heritage详情/heritage_5.jpg');"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="destination" id="yunnan">
-            <div class="bg-image" style="background-image: url('img/云南.jpg');"></div>
+        <!-- 2. 当代脉动主题 -->
+        <section class="destination" id="vibrancy">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back2.mp4" type="video/mp4">
+                </video>
+            </div>
             <div class="content">
-                <h1>云南</h1>
+                <h1>Vibrancy</h1>
+                <div class="subtitle">当代脉动</div>
                 <div class="button-group">
-                    <button class="details-btn">查看详情</button>
-                    <button class="custom-btn">定制行程</button>
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
                 </div>
             </div>
             <div class="details-page">
                 <div class="details-content">
                     <div class="details-text">
-                        <h2>云南</h2>
-                        <p>云南省位于中国西南边际，是一个地形多样、民族文化丰富、自然风光秘美的地方。云南拥有雅砂、丽江、大理、香格里拉等著名旅游目的地。</p>
-                        <p>云南是中国少数民族最多的省份之一，堆田梨花蓝天白云的梨花台，色彩斑斓的民族乡村，展现了丰富的多元文化。</p>
-                        <p>这里有壮观的大自然，矩阳红土地、三江并流、玉龙雪山……每一处风景都值得累足留迹。云南的美食同样独具特色，过桥米线、汤包和遍布全省的小吃都令人回味无穷。</p>
-                        <button class="back-btn">返回</button>
+                        <h2>Vibrancy</h2>
+                        <p class="subtitle">当代脉动</p>
+                        <p class="intro-title">"Where Traditions Quantum Leap into Future"</p>
+                        <p>Shanghai's Bund neon recodes ink-wash aesthetics in CSS, while Shenzhen DJI drones sketch calligraphy across skies. In Beijing 798's steel mills, Kunqu opera divas debate with AI poets; Chongqing's stilted houses fuse hotpot steam with holographic Shanhaijing creatures.</p>
+                        <p>From Guizhou's FAST telescope capturing cosmic pulses to Yiwu's bazaar assembling global commerce – witness civilization's daily supernova explosions.</p>
+                        <button class="back-btn">Back</button>
                     </div>
                     <div class="details-gallery">
                         <div class="gallery-container">
-                            <div class="gallery-item" style="background-image: url('img/云南详情/大理🌈必打卡的10个景点游玩攻略🔥_2_猫在途（攻略版）_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/云南详情/大理🌈必打卡的10个景点游玩攻略🔥_4_猫在途（攻略版）_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/云南详情/大理🌈必打卡的10个景点游玩攻略🔥_6_猫在途（攻略版）_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/云南详情/大理🌈必打卡的10个景点游玩攻略🔥_8_猫在途（攻略版）_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/云南详情/大理🌈必打卡的10个景点游玩攻略🔥_10_猫在途（攻略版）_来自小红书网页版.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/vibrancy详情/vibrancy_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/vibrancy详情/vibrancy_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/vibrancy详情/vibrancy_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/vibrancy详情/vibrancy_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/vibrancy详情/vibrancy_5.jpg');"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="destination" id="shanghai">
-            <div class="bg-image" style="background-image: url('img/上海.jpg');"></div>
+        <!-- 3. 中国味道主题 -->
+        <section class="destination" id="cuisine">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back3.mp4" type="video/mp4">
+                </video>
+            </div>
             <div class="content">
-                <h1>上海</h1>
+                <h1>Cuisine</h1>
+                <div class="subtitle">中国味道</div>
                 <div class="button-group">
-                    <button class="details-btn">查看详情</button>
-                    <button class="custom-btn">定制行程</button>
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
                 </div>
             </div>
             <div class="details-page">
                 <div class="details-content">
                     <div class="details-text">
-                        <h2>上海</h2>
-                        <p>上海，中国的国际大都市，是一座现代与传统完美融合的城市。这里的外滩是世界知名的地标，汉口外滩的露天酒吧和餐厅充满活力。</p>
-                        <p>上海的城市天际线令人叙叹，以东方明珠、环球金融中心为代表的高楼大厦构成了令人难忘的城市天际线。同时，城市中的秦淇孔庹公园、豪宅花园等充满历史气息的老建筑则展示了城市的情思惜别。</p>
-                        <p>上海的美食也独具一格，从小龙虾面、小笼包、粥店等传统小吃，到各国美食一应俗全。这里不仅是商业中心，也是艺术和时尚中心，新天地、田子坊等带有浮华有实的上海生活体验。</p>
-                        <button class="back-btn">返回</button>
+                        <h2>Cuisine</h2>
+                        <p class="subtitle">中国味道</p>
+                        <p class="intro-title">"Tasting 5,000 Years of Civilization"</p>
+                        <p>China's Eight Great Cuisines are merely the prologue to a culinary epic. Chengdu's bubbling hotpot alleyways radiate Sichuan's fiery spirit, while Canton's dim sum rituals embody Lingnan precision. From sizzling lamb skewers in Dunhuang Night Market to crab roast buns savored with Suzhou Pingtan melodies, every bite deciphers living heritage.</p>
+                        <p>Mold ceramic tableware at Jingdezhen feasts or blend vintage huangjiu in Shaoxing cellars – let your palate write the truest travelogue.</p>
+                        <button class="back-btn">Back</button>
                     </div>
                     <div class="details-gallery">
                         <div class="gallery-container">
-                            <div class="gallery-item" style="background-image: url('img/上海详情/上海必去的九大景点  上海去那玩推荐_2_上海吃喝玩乐推荐_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/上海详情/上海必去的九大景点  上海去那玩推荐_4_上海吃喝玩乐推荐_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/上海详情/上海必去的九大景点  上海去那玩推荐_6_上海吃喝玩乐推荐_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/上海详情/上海必去的九大景点  上海去那玩推荐_8_上海吃喝玩乐推荐_来自小红书网页版.jpg');"></div>
-                            <div class="gallery-item" style="background-image: url('img/上海详情/上海必去的九大景点  上海去那玩推荐_10_上海吃喝玩乐推荐_来自小红书网页版.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/cuisine详情/cuisine_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/cuisine详情/cuisine_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/cuisine详情/cuisine_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/cuisine详情/cuisine_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/cuisine详情/cuisine_5.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 购物热潮主题 -->
+        <section class="destination" id="buygasm">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back4.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="content">
+                <h1>Buygasm</h1>
+                <div class="subtitle">购物热潮</div>
+                <div class="button-group">
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
+                </div>
+            </div>
+            <div class="details-page">
+                <div class="details-content">
+                    <div class="details-text">
+                        <h2>Buygasm</h2>
+                        <p class="subtitle">购物热潮</p>
+                        <p class="intro-title">"Hunting Treasures in Retail's Shanhaijing"</p>
+                        <p>Panjiayuan Ghost Market's lanterns illuminate Ming-Qing fantasies, while Hangzhou livestream studios birth new retail legends under ring lights. Jingdezhen's artisans reengineer blue-white porcelain via 3D printing; Hainan duty-free carts wheel transpacific price wars.</p>
+                        <p>From Ruifuxiang's silk measuring rituals to Pinduoduo's virtual orange farms – every transaction here sparks cultural supernovae.</p>
+                        <button class="back-btn">Back</button>
+                    </div>
+                    <div class="details-gallery">
+                        <div class="gallery-container">
+                            <div class="gallery-item" style="background-image: url('img/buygasm详情/buygasm_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/buygasm详情/buygasm_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/buygasm详情/buygasm_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/buygasm详情/buygasm_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/buygasm详情/buygasm_5.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 东方禅意主题 -->
+        <section class="destination" id="zen">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back5.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="content">
+                <h1>Zen</h1>
+                <div class="subtitle">东方禅意</div>
+                <div class="button-group">
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
+                </div>
+            </div>
+            <div class="details-page">
+                <div class="details-content">
+                    <div class="details-text">
+                        <h2>Zen</h2>
+                        <p class="subtitle">东方禅意</p>
+                        <p class="intro-title">"Mastering Chinese Serenity"</p>
+                        <p>Huangshan's sea of clouds tutors breathing cadence, while West Lake's withered lotus pods embody wabi-sabi aesthetics. When Emei's macaques dart past, Zen's "mountains are mountains" epiphany strikes. Practice kungfu amidst Shaolin Temple's dawn bells, redefining body-cosmos connections.</p>
+                        <p>Yangzhou's Ge Garden stone landscapes poetize seasons; Jingdezhen kilns resurrect clay through fire alchemy. Here, slowness transcends pace – it's enlightenment in motion.</p>
+                        <button class="back-btn">Back</button>
+                    </div>
+                    <div class="details-gallery">
+                        <div class="gallery-container">
+                            <div class="gallery-item" style="background-image: url('img/zen详情/zen_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/zen详情/zen_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/zen详情/zen_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/zen详情/zen_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/zen详情/zen_5.jpg');"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 节庆狂欢主题 -->
+        <section class="destination" id="festivity">
+            <div class="bg-image">
+                <video class="bg-video" autoplay loop muted playsinline>
+                    <source src="img/back6.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="content">
+                <h1>Festivity</h1>
+                <div class="subtitle">节庆狂欢</div>
+                <div class="button-group">
+                    <button class="details-btn">Explore Further</button>
+                    <button class="custom-btn">Design Your Odyssey</button>
+                </div>
+            </div>
+            <div class="details-page">
+                <div class="details-content">
+                    <div class="details-text">
+                        <h2>Festivity</h2>
+                        <p class="subtitle">节庆狂欢</p>
+                        <p class="intro-title">"Joining Humanity's Grandest Emotional Symphony"</p>
+                        <p>When Zigong Lantern Festival ignites a Milky Way on earth, Dai Water Splashing Festival's droplets prism solar blessings. Minnan Bo Bing dice clatters out scholar dreams wilder than Vegas roulette; Inner Mongolia's Naadam wrestlers compose grassland epics with each takedown.</p>
+                        <p>These millennial rituals encode Chinese romance in collective memory's DNA.</p>
+                        <button class="back-btn">Back</button>
+                    </div>
+                    <div class="details-gallery">
+                        <div class="gallery-container">
+                            <div class="gallery-item" style="background-image: url('img/festivity详情/festivity_1.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/festivity详情/festivity_2.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/festivity详情/festivity_3.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/festivity详情/festivity_4.jpg');"></div>
+                            <div class="gallery-item" style="background-image: url('img/festivity详情/festivity_5.jpg');"></div>
                         </div>
                     </div>
                 </div>
@@ -161,7 +396,7 @@
                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2v1.662"></path></svg>
                 </div>
                 <div class="cs-bubble">
-                    <p>您好！欢迎咨询中国旅游目的地服务。请问有什么可以帮助您的吗？</p>
+                    <p>您好！欢迎咨询中国旅游主题服务。请问有什么可以帮助您的吗？</p>
                     <span class="cs-time">刚刚</span>
                 </div>
             </div>
@@ -172,6 +407,71 @@
         </div>
     </div>
 
+    <!-- 添加服务详细介绍窗口 -->
+    <div class="service-detail-window" id="serviceDetailWindow">
+        <div class="return-price-area" id="returnToPriceBtn">
+            <div class="return-price-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </div>
+            <div class="return-price-text">返回价格列表</div>
+        </div>
+        <div class="service-detail-content">
+            <div class="detail-header">
+                <h2 id="serviceDetailTitle">服务详情</h2>
+                <button class="detail-close-btn" id="detailCloseBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="detail-container">
+                <div class="detail-text">
+                    <h3 id="serviceSubtitle">休闲体验</h3>
+                    <div class="detail-price" id="serviceDetailPrice"><del>$50</del> <span>$10</span>/trip</div>
+                    <div class="detail-description" id="serviceDetailDescription">
+                        <p>我们的休闲体验服务为您提供基础但全面的旅行规划支持，让您以最经济的价格获得高质量的旅行体验。</p>
+                        <h4>服务内容</h4>
+                        <ul>
+                            <li><strong>基础行程规划</strong> - 根据您的兴趣和预算，为您规划最适合的旅行路线。</li>
+                            <li><strong>精美住宿推荐</strong> - 精选性价比高的特色住宿，满足您舒适与体验的双重需求。</li>
+                            <li><strong>特色美食推荐</strong> - 推荐当地必尝美食和隐藏的美食宝藏。</li>
+                            <li><strong>节省预算帮助</strong> - 提供省钱技巧，最大化您的旅行价值。</li>
+                            <li><strong>便捷旅游计划搭建</strong> - 轻松整合各类交通和景点信息，形成便捷旅游参考方案。</li>
+                            <li><strong>12小时在线客服</strong> - 在旅行期间提供及时的在线支持服务。</li>
+                        </ul>
+                        <h4>适合人群</h4>
+                        <p>这项服务特别适合预算有限但希望获得优质旅行体验的旅行者、首次前往目的地的探索者，以及喜欢自助旅行但需要一些专业指导的人士。</p>
+                        <h4>服务流程</h4>
+                        <ol>
+                            <li>填写您的旅行偏好与需求</li>
+                            <li>我们的旅行顾问与您沟通确认详情</li>
+                            <li>在48小时内收到定制的旅行建议方案</li>
+                            <li>根据反馈进行方案调整</li>
+                            <li>获取最终旅行规划和所有必要信息</li>
+                        </ol>
+                    </div>
+                    <button class="action-btn">立即购买</button>
+                </div>
+                <div class="detail-media">
+                    <div class="video-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                        </svg>
+                        <p>服务介绍视频</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
+	
+	<script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/cn/index.js"></script>
+	
 </body>
 </html>

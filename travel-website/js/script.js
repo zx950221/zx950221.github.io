@@ -8,6 +8,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // 设置滚动冷却时间，防止连续触发
     const scrollCooldown = 1000; // 1秒
     
+    // 初始化视频背景
+    const videos = document.querySelectorAll('.bg-video');
+    videos.forEach(video => {
+        // 确保视频加载完成后播放
+        video.addEventListener('loadeddata', () => {
+            video.play().catch(error => {
+                console.log("视频自动播放失败:", error);
+            });
+        });
+        
+        // 视频结束时重新播放
+        video.addEventListener('ended', () => {
+            video.play().catch(error => {
+                console.log("视频重新播放失败:", error);
+            });
+        });
+    });
+    
     // 处理鼠标滚轮事件
     function handleScroll(event) {
         // 如果正在滚动动画中，不处理新的滚动
@@ -328,6 +346,214 @@ document.addEventListener('DOMContentLoaded', () => {
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }, 1000);
         }
+    }
+
+    // 价格窗口功能
+    const priceMenuBtn = document.getElementById('priceMenuBtn');
+    const priceWindow = document.getElementById('priceWindow');
+    const priceCloseBtn = document.getElementById('priceCloseBtn');
+    const priceContent = document.querySelector('.price-content');
+
+    // 打开价格窗口
+    priceMenuBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        priceWindow.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 添加动画延迟，确保过渡效果平滑
+        setTimeout(() => {
+            priceContent.style.transform = 'translateY(0)';
+            priceContent.style.opacity = '1';
+        }, 100);
+    });
+
+    // 关闭价格窗口
+    priceCloseBtn.addEventListener('click', () => {
+        priceContent.style.transform = 'translateY(-50px)';
+        priceContent.style.opacity = '0';
+        
+        setTimeout(() => {
+            priceWindow.classList.remove('active');
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }, 500);
+    });
+
+    // 点击窗口外部关闭
+    priceWindow.addEventListener('click', (e) => {
+        if (e.target === priceWindow && !priceWindow.classList.contains('collapsed')) {
+            priceContent.style.transform = 'translateY(-50px)';
+            priceContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                priceWindow.classList.remove('active');
+                document.body.style.overflow = '';
+            }, 500);
+        }
+    });
+    
+    // 点击半隐藏的价格窗口恢复展开
+    priceWindow.addEventListener('click', (e) => {
+        // 只有当价格窗口处于折叠状态，且点击的是窗口本身而不是内部元素时
+        if (priceWindow.classList.contains('collapsed') && e.target === priceWindow) {
+            // 恢复价格窗口
+            priceWindow.classList.remove('collapsed');
+            
+            // 隐藏服务详情窗口
+            const serviceDetailWindow = document.getElementById('serviceDetailWindow');
+            serviceDetailWindow.classList.remove('active');
+            
+            // 确保价格窗口可见
+            priceContent.style.transform = 'translateY(0)';
+            priceContent.style.opacity = '1';
+        }
+    });
+    
+    // 添加返回价格卡片按钮的功能
+    const returnToPriceBtn = document.getElementById('returnToPriceBtn');
+    returnToPriceBtn.addEventListener('click', () => {
+        // 添加动画效果
+        const iconElement = returnToPriceBtn.querySelector('.return-price-icon');
+        const textElement = returnToPriceBtn.querySelector('.return-price-text');
+        
+        // 创建点击动画效果
+        iconElement.style.transform = 'scale(0.85) rotate(-30deg)';
+        iconElement.style.boxShadow = '0 0 30px rgba(243, 166, 66, 0.8)';
+        textElement.style.transform = 'scale(0.9)';
+        
+        // 先隐藏服务详情窗口
+        const serviceDetailWindow = document.getElementById('serviceDetailWindow');
+        serviceDetailWindow.classList.remove('active');
+        
+        // 短暂延迟后恢复价格窗口，确保动画流畅
+        setTimeout(() => {
+            // 确保价格窗口处于活跃状态
+            if (!priceWindow.classList.contains('active')) {
+                priceWindow.classList.add('active');
+            }
+            
+            // 恢复价格窗口
+            priceWindow.classList.remove('collapsed');
+            
+            // 重置返回按钮动画
+            iconElement.style.transform = '';
+            iconElement.style.boxShadow = '';
+            textElement.style.transform = '';
+            
+            // 确保价格窗口可见
+            priceContent.style.transform = 'translateY(0)';
+            priceContent.style.opacity = '1';
+        }, 300);
+    });
+
+    // 价格卡片的预订按钮点击事件
+    const priceActionBtns = document.querySelectorAll('.price-action-btn');
+    priceActionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 获取服务名称
+            const serviceName = btn.closest('.price-card').querySelector('h3').textContent;
+            const priceText = btn.closest('.price-card').querySelector('.price').innerHTML;
+            const features = [];
+            
+            // 获取服务特点
+            const featureItems = btn.closest('.price-card').querySelectorAll('.price-features li');
+            featureItems.forEach(item => {
+                features.push(item.textContent);
+            });
+            
+            // 切换价格窗口状态
+            priceWindow.classList.add('collapsed');
+            
+            // 更新服务详情
+            updateServiceDetail(serviceName, priceText, features);
+            
+            // 显示服务详情窗口
+            const serviceDetailWindow = document.getElementById('serviceDetailWindow');
+            serviceDetailWindow.classList.add('active');
+        });
+    });
+    
+    // 更新服务详情内容
+    function updateServiceDetail(name, price, features) {
+        document.getElementById('serviceDetailTitle').textContent = '服务详情 - ' + name;
+        document.getElementById('serviceSubtitle').textContent = name;
+        document.getElementById('serviceDetailPrice').innerHTML = price;
+        
+        // 根据服务类型更新详细描述
+        let description = '';
+        let audienceText = '';
+        let processText = '';
+        
+        if (name === '休闲体验') {
+            description = '我们的休闲体验服务为您提供基础但全面的旅行规划支持，让您以最经济的价格获得高质量的旅行体验。';
+            audienceText = '这项服务特别适合预算有限但希望获得优质旅行体验的旅行者、首次前往目的地的探索者，以及喜欢自助旅行但需要一些专业指导的人士。';
+            processText = `<ol>
+                <li>填写您的旅行偏好与需求</li>
+                <li>我们的旅行顾问与您沟通确认详情</li>
+                <li>在48小时内收到定制的旅行建议方案</li>
+                <li>根据反馈进行方案调整</li>
+                <li>获取最终旅行规划和所有必要信息</li>
+            </ol>`;
+        } else if (name === '文化探索') {
+            description = '我们的文化探索服务为您深度挖掘目的地的文化精髓，带您体验当地最真实的文化活动和生活方式。';
+            audienceText = '这项服务特别适合对目的地文化有深入了解需求的旅行者、文化体验爱好者，以及希望获得深度社交体验的探索者。';
+            processText = `<ol>
+                <li>详细了解您对文化体验的期望</li>
+                <li>专业文化顾问与您一对一沟通</li>
+                <li>在72小时内收到深度文化体验方案</li>
+                <li>优先安排专业导游及文化体验活动</li>
+                <li>获取当地文化深度解读和互动体验</li>
+            </ol>`;
+        } else if (name === '奢华定制') {
+            description = '我们的奢华定制服务为追求极致体验的旅行者提供全方位的私人定制服务，从专车接送到米其林用餐，每一个细节都经过精心安排。';
+            audienceText = '这项服务特别适合追求完美体验的高端旅行者、商务人士，以及希望获得无忧旅行体验的家庭或团体。';
+            processText = `<ol>
+                <li>与私人旅行管家视频沟通您的需求</li>
+                <li>获得专属定制方案及尊享特权</li>
+                <li>享受每日行程确认及调整服务</li>
+                <li>24/7全天候专人支持</li>
+                <li>旅行结束后提供个性化纪念品</li>
+            </ol>`;
+        }
+        
+        // 更新HTML内容
+        const detailDescriptionEl = document.getElementById('serviceDetailDescription');
+        
+        // 构建服务内容列表
+        let featuresHtml = '<ul>';
+        features.forEach(feature => {
+            featuresHtml += `<li><strong>${feature}</strong></li>`;
+        });
+        featuresHtml += '</ul>';
+        
+        detailDescriptionEl.innerHTML = `
+            <p>${description}</p>
+            <h4>服务内容</h4>
+            ${featuresHtml}
+            <h4>适合人群</h4>
+            <p>${audienceText}</p>
+            <h4>服务流程</h4>
+            ${processText}
+        `;
+    }
+    
+    // 服务详情窗口关闭按钮
+    const detailCloseBtn = document.getElementById('detailCloseBtn');
+    detailCloseBtn.addEventListener('click', () => {
+        const serviceDetailWindow = document.getElementById('serviceDetailWindow');
+        serviceDetailWindow.classList.remove('active');
+        
+        // 恢复价格窗口
+        setTimeout(() => {
+            priceWindow.classList.remove('collapsed');
+        }, 300);
+    });
+    
+    // 点击立即购买按钮
+    const buyNowBtn = document.querySelector('.service-detail-window .action-btn');
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', () => {
+            alert('购买功能即将上线，敬请期待！');
+        });
     }
 });
 

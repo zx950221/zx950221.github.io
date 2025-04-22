@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: Arial, "LXGW WenKai", sans-serif;
 }
 
 body {
@@ -198,7 +198,30 @@ main {
     height: 100%;
     background-size: cover;
     background-position: center;
+}
+
+/* 添加视频背景支持 */
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     z-index: -1;
+}
+
+#testing .bg-image {
+    background: none;
+}
+
+#testing video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .content {
@@ -231,18 +254,21 @@ h1 {
     background-color: white;
     color: #666;
     border: none;
-    padding: 12px 30px;
+    padding: 12px 35px;
     border-radius: 50px;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, min-width 0.3s ease;
     transform: translateY(0);
+    min-width: 180px;
 }
 
 .details-btn:hover {
     background-color: rgba(255, 255, 255, 0.9);
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-width: 200px;
+    letter-spacing: 0.5px;
 }
 
 .destination:not(.active) .details-btn {
@@ -250,36 +276,68 @@ h1 {
     opacity: 0;
 }
 
-/* 为不同目的地设置不同背景色调 */
-#chengdu .bg-image::after {
+
+/* 新主题背景渐变效果 */
+/* #cuisine .bg-image::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    background: linear-gradient(to bottom, rgba(180, 40, 40, 0.3), rgba(180, 40, 40, 0.7));
 }
 
-#yunnan .bg-image::after {
+#heritage .bg-image::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    background: linear-gradient(to bottom, rgba(80, 60, 30, 0.3), rgba(80, 60, 30, 0.7));
 }
 
-#shanghai .bg-image::after {
+#zen .bg-image::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    background: linear-gradient(to bottom, rgba(60, 100, 100, 0.3), rgba(60, 100, 100, 0.7));
 }
+
+#vibrancy .bg-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(70, 0, 120, 0.3), rgba(70, 0, 120, 0.7));
+}
+
+#festivity .bg-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(200, 50, 0, 0.3), rgba(200, 50, 0, 0.7));
+}
+
+#buygasm .bg-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 80, 120, 0.3), rgba(0, 80, 120, 0.7));
+} */
+
 
 /* 新增定制行程页面样式 */
 .custom-plan-page {
@@ -311,18 +369,21 @@ h1 {
     background: white;
     color: #666;
     border: none;
-    padding: 12px 30px;
+    padding: 12px 35px;
     border-radius: 50px;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, min-width 0.3s ease;
     transform: translateY(0);
+    min-width: 180px;
 }
 
 .custom-btn:hover {
     background: white;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-width: 200px;
+    letter-spacing: 0.5px;
 }
 
 /* 专家介绍区域 */
@@ -567,4 +628,441 @@ h1 {
 
 .cs-send-btn:hover {
     background-color: #333;
+}
+
+/* 添加中文副标题样式 */
+.subtitle {
+    font-size: 1.8rem;
+    font-weight: 700; /* 从300改为700，加粗 */
+    margin-top: 10px;
+    opacity: 0.85;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    font-family: "LXGW WenKai", sans-serif; /* 应用霞鹜文楷字体 */
+    color: white; /* 添加白色 */
+}
+
+/* 价格窗口样式 */
+.price-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* 移除黑色透明背景 */
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.5s ease-in-out;
+}
+
+.price-window.active {
+    display: flex;
+}
+
+.price-window.collapsed {
+    transform: translateX(-85%);
+    justify-content: flex-start;
+}
+
+.price-content {
+    background-color: #111;
+    border-radius: 10px;
+    max-width: 1000px;
+    width: 90%;
+    overflow: hidden;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    transition: width 0.5s ease;
+}
+
+.price-window.collapsed .price-content {
+    border-radius: 0 10px 10px 0;
+    transition: all 0.5s ease;
+}
+
+.price-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.price-header h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.price-close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.price-close-btn:hover {
+    color: #f3a642;
+}
+
+.price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 30px;
+}
+
+.price-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.price-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.price-card.featured {
+    background-color: rgba(243, 166, 66, 0.1);
+    border: 1px solid rgba(243, 166, 66, 0.3);
+}
+
+.price-card-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.price-card-header h3 {
+    margin: 0 0 15px;
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.price {
+    font-size: 2rem;
+    color: #f3a642;
+    font-weight: 700;
+}
+
+.price span {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.price del {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 8px;
+}
+
+.price-features {
+    padding: 20px;
+    list-style: none;
+    margin: 0;
+}
+
+.price-features li {
+    padding: 10px 0;
+    color: #fff;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    position: relative;
+    padding-left: 25px;
+}
+
+.price-features li:last-child {
+    border-bottom: none;
+}
+
+.price-features li::before {
+    content: "✓";
+    color: #f3a642;
+    position: absolute;
+    left: 0;
+}
+
+.price-action-btn {
+    display: block;
+    width: 80%;
+    margin: 0 auto 20px;
+    padding: 12px;
+    background-color: #f3a642;
+    color: #111;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.price-action-btn:hover {
+    background-color: #fff;
+}
+
+/* 服务详情窗口样式 */
+.service-detail-window {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: transparent; /* 移除背景不透明度 */
+    z-index: 900;
+    display: flex;
+    justify-content: flex-end;
+    transition: right 0.5s ease-in-out;
+    pointer-events: auto;
+}
+
+.service-detail-window.active {
+    right: 0;
+}
+
+.service-detail-content {
+    background-color: #111;
+    max-width: 100%;
+    width: 85%;
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 950; /* 确保低于返回按钮的z-index */
+}
+
+.return-price-area {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 15%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000; /* 提高z-index确保在背景之上 */
+    transition: all 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+    background-color: rgba(243, 166, 66, 0.1); /* 改为金色背景 */
+    border-right: 2px solid rgba(243, 166, 66, 0.3);
+}
+
+.service-detail-window.active .return-price-area {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.return-price-area:hover {
+    background-color: rgba(243, 166, 66, 0.2); /* 悬停时使用浅金色背景 */
+    border-right: 3px solid rgba(243, 166, 66, 0.9);
+    width: 18%;
+}
+
+.return-price-icon {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(243, 166, 66, 0.7);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(243, 166, 66, 0.6);
+}
+
+.return-price-icon svg {
+    color: white;
+    stroke-width: 2.5;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.5));
+}
+
+.return-price-area:hover .return-price-icon {
+    background-color: rgba(243, 166, 66, 0.9);
+    transform: scale(1.15);
+    box-shadow: 0 0 30px rgba(243, 166, 66, 0.8);
+    border-color: #fff;
+}
+
+.return-price-area:hover .return-price-icon svg {
+    transform: rotate(90deg) scale(1.1);
+}
+
+.return-price-text {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    opacity: 1;
+    transition: all 0.4s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background-color: rgba(243, 166, 66, 0.5);
+    padding: 10px 18px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.return-price-area:hover .return-price-text {
+    opacity: 1;
+    background-color: rgba(243, 166, 66, 0.8);
+    transform: scale(1.08);
+    box-shadow: 0 0 15px rgba(243, 166, 66, 0.6);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    background-color: #111;
+    z-index: 10;
+}
+
+.detail-header h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.detail-close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.detail-close-btn:hover {
+    color: #f3a642;
+}
+
+.detail-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 30px;
+    padding: 30px;
+}
+
+@media (max-width: 1024px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-detail-content {
+        width: 90%;
+    }
+    
+    .return-price-area {
+        width: 10%;
+    }
+}
+
+@media (max-width: 768px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-detail-content {
+        width: 100%;
+    }
+    
+    .return-price-area {
+        display: none;
+    }
+}
+
+.detail-text h3 {
+    color: #fff;
+    font-size: 2rem;
+    margin: 0 0 15px;
+}
+
+.detail-price {
+    font-size: 1.8rem;
+    color: #f3a642;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.detail-price del {
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 8px;
+}
+
+.detail-price span {
+    font-size: 1.8rem;
+}
+
+.detail-description {
+    color: #ddd;
+    line-height: 1.6;
+}
+
+.detail-description h4 {
+    color: #f3a642;
+    margin: 25px 0 10px;
+}
+
+.detail-description ul, 
+.detail-description ol {
+    padding-left: 20px;
+}
+
+.detail-description li {
+    margin-bottom: 10px;
+}
+
+.detail-media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 350px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.video-placeholder svg {
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+.action-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 30px;
+    background-color: #f3a642;
+    color: #111;
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #fff;
 }
