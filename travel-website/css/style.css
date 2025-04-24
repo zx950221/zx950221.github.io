@@ -1,3 +1,13 @@
+/* General Styles */
+:root {
+    --primary-color: #0d253f;
+    --secondary-color: #01b4e4;
+    --accent-color: #90cea1;
+    --text-light: #ffffff;
+    --text-dark: #222222;
+    --transition-speed: 0.3s;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -1065,4 +1075,257 @@ h1 {
 
 .action-btn:hover {
     background-color: #fff;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    /* 导航栏调整 */
+    header {
+        padding: 15px 20px;
+    }
+    
+    .logo svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+    
+    .menu.active {
+        display: flex;
+    }
+    
+    .menu li {
+        margin: 15px 0;
+    }
+    
+    .menu a {
+        font-size: 20px;
+    }
+    
+    /* 汉堡菜单 */
+    .menu-toggle {
+        display: block;
+        width: 30px;
+        height: 25px;
+        position: relative;
+        cursor: pointer;
+        z-index: 2001;
+    }
+    
+    .menu-toggle span {
+        display: block;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background: white;
+        border-radius: 3px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
+    }
+    
+    .menu-toggle span:nth-child(1) {
+        top: 0px;
+    }
+    
+    .menu-toggle span:nth-child(2) {
+        top: 10px;
+    }
+    
+    .menu-toggle span:nth-child(3) {
+        top: 20px;
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+        top: 10px;
+        transform: rotate(135deg);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+        left: -60px;
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        top: 10px;
+        transform: rotate(-135deg);
+    }
+    
+    /* 主要内容调整 */
+    h1 {
+        font-size: 16vw;
+        letter-spacing: 5px;
+    }
+    
+    .subtitle {
+        font-size: 1.3rem;
+    }
+    
+    /* 详情页调整 */
+    .details-content {
+        flex-direction: column;
+    }
+    
+    .details-text {
+        width: 100%;
+        padding: 100px 20px 30px;
+        order: 2;
+    }
+    
+    .details-gallery {
+        width: 100%;
+        height: 40vh;
+        order: 1;
+    }
+    
+    .gallery-item {
+        min-width: 70%;
+        height: 220px;
+    }
+    
+    /* 服务详情窗口调整 */
+    .detail-container {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .service-detail-content {
+        width: 100%;
+    }
+    
+    .return-price-area {
+        display: none;
+    }
+    
+    /* 客服窗口调整 */
+    .customer-service-window {
+        bottom: 20px;
+        width: 90%;
+        right: -100%;
+    }
+    
+    .customer-service-window.active {
+        right: 5%;
+    }
+    
+    /* 价格窗口调整 */
+    .price-grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+    
+    .price-content {
+        width: 95%;
+    }
+    
+    /* 自定义行程页面调整 */
+    .custom-plan-page {
+        flex-direction: column;
+        padding: 60px 20px 20px;
+    }
+    
+    .expert-profile {
+        width: 100%;
+        padding: 20px;
+        order: 2;
+    }
+    
+    .custom-gallery {
+        width: 100%;
+        height: 40vh;
+        order: 1;
+    }
+    
+    .expert-title {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+    
+    /* 浮动按钮调整 */
+    .floating-btn {
+        bottom: 20px;
+        right: 20px;
+        top: auto;
+        transform: translateY(0) translateX(0);
+        width: auto;
+        padding: 10px 15px;
+        border-radius: 50px;
+    }
+    
+    .floating-btn:hover {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+/* 平板设备响应式样式 */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    /* 详情页调整 */
+    .details-text {
+        width: 40%;
+    }
+    
+    .details-gallery {
+        width: 60%;
+    }
+    
+    .gallery-item {
+        min-width: 60%;
+    }
+    
+    /* 价格卡片调整 */
+    .price-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* 自定义行程页面调整 */
+    .expert-profile {
+        width: 50%;
+    }
+    
+    .custom-gallery {
+        width: 50%;
+    }
+}
+
+/* 处理屏幕方向变化 */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .details-content {
+        flex-direction: row;
+    }
+    
+    .details-text {
+        width: 40%;
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+    
+    .details-gallery {
+        width: 60%;
+    }
+    
+    .custom-plan-page {
+        flex-direction: row;
+    }
+    
+    .expert-profile {
+        width: 50%;
+    }
+    
+    .custom-gallery {
+        width: 50%;
+    }
 }
