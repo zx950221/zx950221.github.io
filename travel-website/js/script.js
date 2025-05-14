@@ -8,6 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // 设置滚动冷却时间，防止连续触发
     const scrollCooldown = 1000; // 1秒
     
+    // 处理滚动指示器
+    function handleScrollIndicators() {
+        // 获取所有滚动指示器
+        const scrollIndicators = document.querySelectorAll('.scroll-indicator');
+        
+        // 只显示当前激活页面的滚动指示器
+        scrollIndicators.forEach((indicator, index) => {
+            if (index === currentIndex) {
+                indicator.style.opacity = "0.8";
+            } else {
+                indicator.style.opacity = "0";
+            }
+        });
+        
+        // 如果在详情页面，隐藏所有滚动指示器
+        if (isDetailsView) {
+            scrollIndicators.forEach(indicator => {
+                indicator.style.opacity = "0";
+            });
+        }
+    }
+    
     // 初始化视频背景
     const videos = document.querySelectorAll('.bg-video');
     videos.forEach(video => {
@@ -64,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // 添加 active 类到当前目的地
         destinations[currentIndex].classList.add('active');
+        
+        // 处理滚动指示器的显示
+        handleScrollIndicators();
         
         // 设置滚动冷却时间
         setTimeout(() => {
@@ -157,6 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
         destination.classList.add('show-details');
         isDetailsView = true;
         
+        // 处理滚动指示器
+        handleScrollIndicators();
+        
         // 重置图片滚动位置
         currentScrollPosition = 0;
         const galleryContainer = destination.querySelector('.gallery-container');
@@ -205,6 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function hideDetails(destination) {
         destination.classList.remove('show-details');
         isDetailsView = false;
+        
+        // 处理滚动指示器
+        handleScrollIndicators();
     }
     
     // 点击"查看详情"按钮的效果
@@ -229,10 +260,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const customButtons = document.querySelectorAll('.custom-btn');
     customButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const customPage = createCustomPage();
+            // 提供默认数据
+            const defaultData = {
+                expert: {
+                    name: "Gao Jiaying",
+                    title: "Senior Travel Planner",
+                    desc: "With a decade of travel planning expertise, Jiaying crafts immersive cultural experiences through her profound understanding and unique insights into Chinese culture. She specializes in discovering hidden gems and authentic cultural experiences. Jiaying excels at seamlessly blending traditional and modern elements, creating personalized itineraries that have delivered unforgettable Chinese journeys for over 2,000 domestic and international travelers.",
+                    image: "高佳颖1.jpg"
+                }
+            };
+            const customPage = createCustomPage(defaultData);
             showCustomPage(customPage);
         });
     });
+    
+    // 页面加载后初始化滚动指示器
+    handleScrollIndicators();
     
     // 监听滚轮事件
     window.addEventListener('wheel', handleScroll);
@@ -280,19 +323,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const csInput = document.querySelector('.cs-input');
     const csSendBtn = document.querySelector('.cs-send-btn');
 
+    // 添加悬停效果
+    customerServiceBtn.addEventListener('mouseenter', () => {
+        customerServiceBtn.style.backgroundColor = 'rgba(255, 255, 255)';
+    });
+    
+    customerServiceBtn.addEventListener('mouseleave', () => {
+        customerServiceBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+    });
+
     // 打开客服窗口
     customerServiceBtn.addEventListener('click', () => {
         customerServiceWindow.classList.add('active');
-        customerServiceBtn.style.display = 'none'; // 隐藏按钮
+        // 不再隐藏按钮，而是改变其样式和文本
+        customerServiceBtn.querySelector('span').textContent = 'Talking...';
+        //customerServiceBtn.style.backgroundColor = 'rgba(243, 166, 66, 0.3)';
+        customerServiceBtn.style.pointerEvents = 'none'; // 禁用点击
     });
 
     // 关闭客服窗口
     csCloseBtn.addEventListener('click', () => {
         customerServiceWindow.classList.remove('active');
         
-        // 延迟显示按钮，等待窗口关闭动画完成
+        // 恢复按钮状态
         setTimeout(() => {
-            customerServiceBtn.style.display = 'flex';
+            customerServiceBtn.querySelector('span').textContent = 'Customer Service';
+            customerServiceBtn.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            customerServiceBtn.style.pointerEvents = 'auto'; // 启用点击
         }, 300);
     });
 
@@ -474,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 更新服务详情内容
     function updateServiceDetail(name, price, features) {
-        document.getElementById('serviceDetailTitle').textContent = '服务详情 - ' + name;
+        document.getElementById('serviceDetailTitle').textContent = 'Service Details - ' + name;
         document.getElementById('serviceSubtitle').textContent = name;
         document.getElementById('serviceDetailPrice').innerHTML = price;
         
@@ -483,35 +540,35 @@ document.addEventListener('DOMContentLoaded', () => {
         let audienceText = '';
         let processText = '';
         
-        if (name === '休闲体验') {
-            description = '我们的休闲体验服务为您提供基础但全面的旅行规划支持，让您以最经济的价格获得高质量的旅行体验。';
-            audienceText = '这项服务特别适合预算有限但希望获得优质旅行体验的旅行者、首次前往目的地的探索者，以及喜欢自助旅行但需要一些专业指导的人士。';
+        if (name === 'Leisure Experience') {
+            description = 'Our leisure experience service provides you with a basic but comprehensive travel planning support, allowing you to enjoy a high-quality travel experience at the lowest price.';
+            audienceText = 'This service is especially suitable for travelers with limited budgets but who hope to get a high-quality travel experience, first-time explorers to the destination, and people who like self-travel but need some professional guidance.';
             processText = `<ol>
-                <li>填写您的旅行偏好与需求</li>
-                <li>我们的旅行顾问与您沟通确认详情</li>
-                <li>在48小时内收到定制的旅行建议方案</li>
-                <li>根据反馈进行方案调整</li>
-                <li>获取最终旅行规划和所有必要信息</li>
+                <li>Tell us your needs, contact us via email at <a href="mailto:xtavellab@gmail.com" style="color:#e8af4e;text-decoration:underline;">xtavellab@gmail.com</a></li>
+                <li>Within 24 hours, our travel planner will contact you and inquire about your detailed requirements</li>
+                <li>Our travel planner will guide you to choose the suitable travel package based on your needs</li>
+                <li>After selection, we will create a planned route for you and help you choose hotels, transportation and other convenient services</li>
+                <li>If you are not satisfied with the planning, we will modify it for you free of charge</li>
             </ol>`;
-        } else if (name === '文化探索') {
-            description = '我们的文化探索服务为您深度挖掘目的地的文化精髓，带您体验当地最真实的文化活动和生活方式。';
-            audienceText = '这项服务特别适合对目的地文化有深入了解需求的旅行者、文化体验爱好者，以及希望获得深度社交体验的探索者。';
+        } else if (name === 'Cultural Exploration') {
+            description = 'Our cultural exploration service helps you deeply explore the cultural essence of the destination, allowing you to experience the most authentic cultural activities and lifestyles.';
+            audienceText = 'This service is especially suitable for travelers who have a deep understanding of the destination culture, cultural experience enthusiasts, and explorers who hope to get a deep social experience.';
             processText = `<ol>
-                <li>详细了解您对文化体验的期望</li>
-                <li>专业文化顾问与您一对一沟通</li>
-                <li>在72小时内收到深度文化体验方案</li>
-                <li>优先安排专业导游及文化体验活动</li>
-                <li>获取当地文化深度解读和互动体验</li>
+                <li>Learn about your expectations for cultural experience</li>
+                <li>Professional cultural consultant will communicate with you one-on-one</li>
+                <li>You will receive a deep cultural experience plan within 72 hours</li>
+                <li>Professional guide and cultural experience activities will be arranged in priority</li>
+                <li>Get local cultural depth interpretation and interactive experience</li>
             </ol>`;
-        } else if (name === '奢华定制') {
-            description = '我们的奢华定制服务为追求极致体验的旅行者提供全方位的私人定制服务，从专车接送到米其林用餐，每一个细节都经过精心安排。';
-            audienceText = '这项服务特别适合追求完美体验的高端旅行者、商务人士，以及希望获得无忧旅行体验的家庭或团体。';
+        } else if (name === 'Luxury Custom Tour') {
+            description = 'Our luxury customization service provides a full range of private customization services for travelers who pursue the ultimate travel experience, from private car transfer to Michelin dining, every detail is carefully arranged.';
+            audienceText = 'This service is especially suitable for high-end travelers, business people, and families or groups who hope to get a worry-free travel experience.';
             processText = `<ol>
-                <li>与私人旅行管家视频沟通您的需求</li>
-                <li>获得专属定制方案及尊享特权</li>
-                <li>享受每日行程确认及调整服务</li>
-                <li>24/7全天候专人支持</li>
-                <li>旅行结束后提供个性化纪念品</li>
+                <li>Communicate with your private travel concierge via video about your needs</li>
+                <li>Get exclusive customization plan and enjoy special privileges</li>
+                <li>Enjoy daily itinerary confirmation and adjustment service</li>
+                <li>24/7 all-day support</li>
+                <li>Provide personalized souvenirs after the trip</li>
             </ol>`;
         }
         
@@ -525,13 +582,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         featuresHtml += '</ul>';
         
+        // 只在"休闲体验"服务类型下添加特色内容
+        let specialFeatureHtml = '';
+        if (name === 'Leisure Experience') {
+            specialFeatureHtml = `
+                <h4>Unlock High-Value Chinese Wisdom Traveling Method</h4>
+                <div class="feature-box">
+                    <p class="feature-slogan">【Savings ≠ Settling, Time Savings ≠ Sightseeing】</p>
+                    <ul class="feature-list">
+                        <li><strong>VIP Travel Plan Calculation System:</strong> Based on the design of <span class="highlight-num">5000+</span> tourist routes, it helps you avoid peak season premium and hidden consumption, averaging savings of <span class="highlight-num">28%</span> on travel expenses!</li>
+                        <li><strong>Dual-Thread Time-Saving Engine:</strong>
+                            <ul>
+                                <li>Before Travel: Local expert <span class="highlight-num">72 hours</span> to customize the entire plan, saving you <span class="highlight-num">30 hours</span> for price comparison</li>
+                                <li>During Travel: Exclusive Concierge Realtime Optimizes Queue/Traffic/Dining Time Sequence, Daily Releases <span class="highlight-num">2.5 hours</span> Immersion Experience Time</li>
+                            </ul>
+                        </li>
+                        <li><strong>Anti-Routine Depth Formula:</strong><br>
+                            (Hutong Breakfast Meeting × Non-Inherit Artisan Workshop) - Shopping Trap + Community Banquet = Textbook Local Experience</li>
+                        <li><strong>Quantifiable Authentic Commitment:</strong><br>
+                            Each experience project has been rated with a score of > <span class="highlight-num">4.5/5</span> by local residents and tourists, Guaranteed Real!</li>
+                    </ul>
+                </div>`;
+        }
+        
         detailDescriptionEl.innerHTML = `
             <p>${description}</p>
-            <h4>服务内容</h4>
+            ${specialFeatureHtml}
+            <h4>Service Content</h4>
             ${featuresHtml}
-            <h4>适合人群</h4>
+            <h4>Suitable Audience</h4>
             <p>${audienceText}</p>
-            <h4>服务流程</h4>
+            <h4>Service Process</h4>
             ${processText}
         `;
     }
@@ -550,64 +631,564 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 点击立即购买按钮
     const buyNowBtn = document.querySelector('.service-detail-window .action-btn');
-    if (buyNowBtn) {
-        buyNowBtn.addEventListener('click', () => {
-            alert('购买功能即将上线，敬请期待！');
+    // if (buyNowBtn) {
+    //     buyNowBtn.addEventListener('click', () => {
+    //         alert('Purchase function is coming soon, please look forward to it!');
+    //     });
+    // }
+
+    // Pre-Trip Help窗口功能
+    const preTripHelpBtn = document.getElementById('preTripHelpBtn');
+    const pretripWindow = document.getElementById('pretripWindow');
+    const pretripCloseBtn = document.getElementById('pretripCloseBtn');
+    const pretripContent = document.querySelector('.pretrip-content');
+    
+    if (preTripHelpBtn && pretripWindow && pretripCloseBtn) {
+        preTripHelpBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            pretripWindow.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            
+            setTimeout(() => {
+                pretripContent.style.transform = 'translateY(0)';
+                pretripContent.style.opacity = '1';
+            }, 100);
         });
+        
+        pretripCloseBtn.addEventListener('click', () => {
+            pretripContent.style.transform = 'translateY(-30px)';
+            pretripContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                pretripWindow.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }, 500);
+        });
+        
+        // 点击窗口外部关闭
+        pretripWindow.addEventListener('click', (e) => {
+            if (e.target === pretripWindow) {
+                pretripContent.style.transform = 'translateY(-30px)';
+                pretripContent.style.opacity = '0';
+                
+                setTimeout(() => {
+                    pretripWindow.classList.remove('active');
+                    document.body.style.overflow = '';
+                }, 500);
+            }
+        });
+    }
+    
+    // About Us窗口功能
+    const aboutUsBtn = document.querySelector('.menu li:nth-child(3) a');
+    const aboutWindow = document.getElementById('aboutWindow');
+    const aboutCloseBtn = document.getElementById('aboutCloseBtn');
+    const aboutContent = document.querySelector('.about-content');
+    const aboutCustomBtn = document.getElementById('aboutCustomBtn');
+    
+    if (aboutUsBtn && aboutWindow && aboutCloseBtn) {
+        aboutUsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            aboutWindow.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            
+            // 添加动画延迟，确保过渡效果平滑
+            setTimeout(() => {
+                aboutContent.style.transform = 'translateY(0)';
+                aboutContent.style.opacity = '1';
+            }, 100);
+        });
+        
+        aboutCloseBtn.addEventListener('click', () => {
+            aboutContent.style.transform = 'translateY(-30px)';
+            aboutContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                aboutWindow.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }, 500);
+        });
+        
+        // 点击窗口外部关闭
+        aboutWindow.addEventListener('click', (e) => {
+            if (e.target === aboutWindow) {
+                aboutContent.style.transform = 'translateY(-30px)';
+                aboutContent.style.opacity = '0';
+                
+                setTimeout(() => {
+                    aboutWindow.classList.remove('active');
+                    document.body.style.overflow = '';
+                }, 500);
+            }
+        });
+        
+        // About Us中的"设计你的旅程"按钮事件
+        if (aboutCustomBtn) {
+            aboutCustomBtn.addEventListener('click', () => {
+                // 关闭About Us窗口
+                aboutContent.style.transform = 'translateY(-30px)';
+                aboutContent.style.opacity = '0';
+                
+                setTimeout(() => {
+                    aboutWindow.classList.remove('active');
+                    
+                    // 提供默认数据
+                    const defaultData = {
+                        expert: {
+                            name: "Gao Jiaying",
+                            title: "Senior Travel Planner",
+                            desc: "With a decade of travel planning expertise, Jiaying crafts immersive cultural experiences through her profound understanding and unique insights into Chinese culture. She specializes in discovering hidden gems and authentic cultural experiences. Jiaying excels at seamlessly blending traditional and modern elements, creating personalized itineraries that have delivered unforgettable Chinese journeys for over 2,000 domestic and international travelers.",
+                            image: "高佳颖1.jpg"
+                        }
+                    };
+                    
+                    // 创建并显示自定义页面
+                    const customPage = createCustomPage(defaultData);
+                    showCustomPage(customPage);
+                }, 500);
+            });
+        }
+    }
+    
+    // Contact Us窗口功能
+    const contactUsBtn = document.querySelector('.menu li:nth-child(4) a');
+    const contactWindow = document.getElementById('contactWindow');
+    const contactCloseBtn = document.getElementById('contactCloseBtn');
+    const contactContent = document.querySelector('.contact-content');
+    const contactForm = document.getElementById('contactForm');
+    
+    if (contactUsBtn && contactWindow && contactCloseBtn) {
+        contactUsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            contactWindow.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+            
+            setTimeout(() => {
+                contactContent.style.opacity = '1';
+                contactContent.style.transform = 'translateY(0) scale(1)';
+            }, 100);
+        });
+        
+        contactCloseBtn.addEventListener('click', () => {
+            contactContent.style.opacity = '0';
+            contactContent.style.transform = 'translateY(-30px) scale(0.95)';
+            
+            setTimeout(() => {
+                contactWindow.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }, 500);
+        });
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                // 获取表单数据
+                const successMessage = document.querySelector('.form-message.success');
+                const errorMessage = document.querySelector('.form-message.error');
+                const submitButton = contactForm.querySelector('.form-submit');
+                
+                // 隐藏之前的消息
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                // 获取表单数据
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+                
+                // 验证表单
+                if (name && email && message) {
+                    // 显示提交中状态
+                    submitButton.innerHTML = 'Sending...';
+                    submitButton.disabled = true;
+                    submitButton.style.opacity = '0.7';
+                    submitButton.style.cursor = 'wait';
+                    
+                    // 表单将通过原生方式提交
+                    return true;
+                } else {
+                    // 如果表单验证失败，阻止提交
+                    e.preventDefault();
+                    
+                    // 显示错误消息
+                    errorMessage.style.display = 'block';
+                    
+                    // 3秒后自动隐藏错误消息
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 3000);
+                    
+                    return false;
+                }
+            });
+        }
+        
+        // 点击窗口外部关闭
+        contactWindow.addEventListener('click', (e) => {
+            if (e.target === contactWindow) {
+                contactContent.style.opacity = '0';
+                contactContent.style.transform = 'translateY(-30px) scale(0.95)';
+                
+                setTimeout(() => {
+                    contactWindow.classList.remove('active');
+                    document.body.style.overflow = ''; // 恢复背景滚动
+                }, 500);
+            }
+        });
+        
+        // 为社交媒体图标添加点击事件
+        const twitterIcon = document.querySelector('.social-icon.twitter');
+        if (twitterIcon) {
+            twitterIcon.addEventListener('click', () => {
+                window.open('https://twitter.com/X_Travel_Lab', '_blank');
+            });
+        }
+        
+        const instagramIcon = document.querySelector('.social-icon.instagram');
+        if (instagramIcon) {
+            instagramIcon.addEventListener('click', () => {
+                window.open('https://www.instagram.com/xtravellab/', '_blank');
+            });
+        }
     }
 });
 
-function createCustomPage() {
+function createCustomPage(data) {
+    // 如果没有提供数据，使用默认值
+    if (!data) {
+        data = {
+            expert: {
+                name: "Gao Jiaying",
+                title: "Senior Travel Planner",
+                desc: "With a decade of travel planning expertise, Jiaying crafts immersive cultural experiences through her profound understanding and unique insights into Chinese culture. A graduate from a prestigious tourism management institute and recipient of multiple international travel planning awards, she specializes in discovering hidden gems and authentic cultural experiences. Jiaying excels at seamlessly blending traditional and modern elements, creating personalized itineraries that have delivered unforgettable Chinese journeys for over 2,000 domestic and international travelers.",
+                image: "高佳颖1.jpg"
+            }
+        };
+    }
+    
     const page = document.createElement('div');
     page.className = 'custom-plan-page';
-    
-    // 图片集部分
-    const gallery = document.createElement('div');
-    gallery.className = 'custom-gallery';
-    gallery.innerHTML = `
-        <div class="gallery-container">
-            <div class="gallery-item" style="background-image: url('img/专家/高佳颖1.jpg');"></div>
-            <div class="gallery-item" style="background-image: url('img/专家/高佳颖2.jpg');"></div>
-            <div class="gallery-item" style="background-image: url('img/专家/高佳颖3.jpg');"></div>
-        </div>
-    `;
     
     // 专家介绍部分
     const profile = document.createElement('div');
     profile.className = 'expert-profile';
-    profile.innerHTML = `
-        <h2 class="expert-title">高佳颖</h2>
-        <p class="expert-description">
-            资深旅行规划师，拥有10年深度旅行定制经验。毕业于复旦大学旅游管理专业，曾为《国家地理》特约撰稿人。擅长将文化体验与自然探索完美融合，独创的"五感旅行法"已帮助3000+旅行者获得独特体验。
-        </p>
-        <p class="expert-description">
-            旅行理念：<br>
-            "真正的旅行不是到达某个地点，而是打开新的感知维度。我致力于为每位旅行者创造独一无二的心灵共振之旅。"
-        </p>
-        <button class="custom-back-btn">返回</button>
-    `;
     
-    // 添加返回按钮事件
-    const backBtn = profile.querySelector('.custom-back-btn');
-    backBtn.addEventListener('click', () => {
-        page.style.left = '-100%';
-        setTimeout(() => page.remove(), 800); // 等待动画完成再移除
+    const expertTitle = document.createElement('h2');
+    expertTitle.className = 'expert-title';
+    expertTitle.textContent = 'Exclusive Travel Consultant';
+    
+    const expertDescription = document.createElement('p');
+    expertDescription.className = 'expert-description';
+    expertDescription.textContent = 'Our professional travel consultant will tailor a perfect travel experience for you based on your preferences and needs.';
+    
+    // 专家信息区域
+    const expertInfo = document.createElement('div');
+    expertInfo.className = 'expert-info';
+    
+    const expertImage = document.createElement('img');
+    expertImage.src = `img/专家/${data.expert.image}`;
+    expertImage.alt = data.expert.name;
+    expertImage.style.width = '120px';
+    expertImage.style.height = '120px';
+    expertImage.style.borderRadius = '50%';
+    expertImage.style.objectFit = 'cover';
+    expertImage.style.border = '3px solid #f3a642';
+    expertImage.style.marginRight = '20px';
+    
+    const expertDetails = document.createElement('div');
+    
+    const expertName = document.createElement('h3');
+    expertName.textContent = data.expert.name;
+    expertName.style.fontSize = '1.8rem';
+    expertName.style.marginBottom = '10px';
+    expertName.style.color = '#333';
+    
+    const expertPosition = document.createElement('p');
+    expertPosition.textContent = data.expert.title;
+    expertPosition.style.fontSize = '1.2rem';
+    expertPosition.style.color = '#666';
+    expertPosition.style.marginBottom = '15px';
+    
+    const expertBio = document.createElement('p');
+    expertBio.textContent = data.expert.desc;
+    expertBio.style.fontSize = '1rem';
+    expertBio.style.lineHeight = '1.5';
+    expertBio.style.color = '#444';
+    
+    // 创建按钮容器
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'custom-buttons';
+    buttonContainer.style.marginTop = '30px';
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.gap = '15px';
+    
+    // 返回按钮
+    const backButton = document.createElement('button');
+    backButton.className = 'custom-back-btn';
+    backButton.textContent = 'Return';
+    backButton.style.background = 'transparent';
+    backButton.style.color = '#4a4a4a';
+    backButton.style.border = '1px solid #4a4a4a';
+    backButton.style.padding = '10px 25px';
+    backButton.style.borderRadius = '30px';
+    backButton.style.fontSize = '16px';
+    backButton.style.cursor = 'pointer';
+    backButton.style.transition = 'all 0.3s ease';
+    
+    // 添加选择套餐按钮
+    const choosePackageBtn = document.createElement('button');
+    choosePackageBtn.className = 'choose-package-btn';
+    choosePackageBtn.textContent = 'Choose Package';
+    choosePackageBtn.style.background = '#e8af4e';
+    choosePackageBtn.style.color = '#333';
+    choosePackageBtn.style.border = 'none';
+    choosePackageBtn.style.padding = '10px 25px';
+    choosePackageBtn.style.borderRadius = '30px';
+    choosePackageBtn.style.fontSize = '16px';
+    choosePackageBtn.style.fontWeight = 'bold';
+    choosePackageBtn.style.cursor = 'pointer';
+    choosePackageBtn.style.transition = 'all 0.3s ease';
+    
+    // 将按钮添加到容器
+    buttonContainer.appendChild(backButton);
+    buttonContainer.appendChild(choosePackageBtn);
+    
+    // 返回按钮点击事件
+    backButton.addEventListener('click', () => {
+        page.style.left = '100%';
+        document.body.style.overflow = 'auto';
+        setTimeout(() => {
+            document.body.removeChild(page);
+        }, 800);
     });
-
+    
+    // 选择套餐按钮点击事件
+    choosePackageBtn.addEventListener('click', () => {
+        // 隐藏自定义页面
+        page.style.left = '100%';
+        
+        // 设置body滚动为hidden
+        document.body.style.overflow = 'hidden';
+        
+        // 移除自定义页面
+        setTimeout(() => {
+            document.body.removeChild(page);
+            
+            // 激活价格窗口
+            const priceWindow = document.getElementById('priceWindow');
+            priceWindow.classList.add('active');
+            
+            // 设置价格内容动画
+            setTimeout(() => {
+                const priceContent = document.querySelector('.price-content');
+                priceContent.style.transform = 'translateY(0)';
+                priceContent.style.opacity = '1';
+            }, 300);
+        }, 800);
+    });
+    
+    // 组装专家信息区域
+    expertDetails.appendChild(expertName);
+    expertDetails.appendChild(expertPosition);
+    expertDetails.appendChild(expertBio);
+    
+    const expertRow = document.createElement('div');
+    expertRow.style.display = 'flex';
+    expertRow.style.alignItems = 'center';
+    expertRow.style.marginTop = '30px';
+    expertRow.style.marginBottom = '20px'; // 增加底部间距
+    
+    expertRow.appendChild(expertImage);
+    expertRow.appendChild(expertDetails);
+    
+    // 添加各元素到信息栏
+    profile.appendChild(expertTitle);
+    profile.appendChild(expertDescription);
+    profile.appendChild(expertRow);
+    
+    // 添加定制路线步骤指南
+    const customStepsContainer = document.createElement('div');
+    customStepsContainer.className = 'custom-steps-container';
+    customStepsContainer.style.marginTop = '30px'; // 减小顶部间距
+    customStepsContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+    customStepsContainer.style.padding = '20px 25px';
+    customStepsContainer.style.borderRadius = '12px';
+    customStepsContainer.style.boxShadow = '0 6px 15px rgba(0,0,0,0.08)';
+    
+    const stepsTitle = document.createElement('h4');
+    stepsTitle.textContent = 'Customization Process Steps';
+    stepsTitle.style.fontSize = '1.3rem';
+    stepsTitle.style.marginBottom = '15px';
+    stepsTitle.style.color = '#333';
+    stepsTitle.style.borderBottom = '2px solid #e8af4e';
+    stepsTitle.style.paddingBottom = '10px';
+    
+    const stepsList = document.createElement('ol');
+    stepsList.style.paddingLeft = '25px';
+    stepsList.style.fontSize = '1rem';
+    stepsList.style.lineHeight = '1.8';
+    
+    const steps = [
+        'Tell us your needs, contact us via email at <a href="mailto:xtavellab@gmail.com" style="color:#e8af4e;text-decoration:underline;">xtavellab@gmail.com</a>', 
+        'Within 24 hours, our travel planner will contact you and inquire about your detailed requirements', 
+        'Our travel planner will guide you to choose the suitable travel package based on your needs',
+        'After selection, we will create a planned route for you and help you choose hotels, transportation and other convenient services',
+        'If you are not satisfied with the planning, we will modify it for you free of charge'
+    ];
+    
+    steps.forEach(step => {
+        const stepItem = document.createElement('li');
+        stepItem.innerHTML = step; // 使用innerHTML而不是textContent，以便支持HTML标签
+        stepItem.style.marginBottom = '10px';
+        stepsList.appendChild(stepItem);
+    });
+    
+    const contactTip = document.createElement('div');
+    contactTip.className = 'contact-tip';
+    contactTip.style.marginTop = '20px';
+    contactTip.style.padding = '15px';
+    contactTip.style.backgroundColor = 'rgba(232, 175, 78, 0.15)';
+    contactTip.style.borderLeft = '4px solid #e8af4e';
+    contactTip.style.borderRadius = '4px';
+    
+    const tipTitle = document.createElement('p');
+    tipTitle.innerHTML = '<strong>Tip:</strong> Follow us on social media where we share daily updates on interesting Chinese activities, unique cultural insights, and hidden gems';
+    tipTitle.style.fontWeight = '500';
+    tipTitle.style.marginBottom = '10px';
+    
+    const tiktokAccounts = document.createElement('div');
+    tiktokAccounts.className = 'tiktok-accounts';
+    tiktokAccounts.style.display = 'flex';
+    tiktokAccounts.style.justifyContent = 'space-around';
+    tiktokAccounts.style.marginTop = '10px';
+    tiktokAccounts.style.flexWrap = 'wrap'; // 添加弹性换行
+    tiktokAccounts.style.gap = '15px'; // 确保项目之间有间距
+    
+    // 添加X账号
+    const accounts = ['@X_Travel_Lab', '@Ni_HaoChina'];
+    
+    accounts.forEach(account => {
+        const accountItem = document.createElement('div');
+        accountItem.className = 'tiktok-account';
+        accountItem.style.display = 'flex';
+        accountItem.style.alignItems = 'center';
+        accountItem.style.padding = '8px 15px';
+        accountItem.style.borderRadius = '20px';
+        accountItem.style.backgroundColor = 'white';
+        accountItem.style.boxShadow = '0 3px 10px rgba(0,0,0,0.1)';
+        accountItem.style.cursor = 'pointer';
+        
+        // X平台图标
+        const icon = document.createElement('span');
+        icon.innerHTML = '𝕏'; // 使用X标志
+        icon.style.marginRight = '8px';
+        icon.style.fontSize = '1.2rem';
+        
+        const accountText = document.createElement('span');
+        accountText.textContent = account;
+        accountText.style.fontWeight = '500';
+        
+        accountItem.appendChild(icon);
+        accountItem.appendChild(accountText);
+        
+        // 添加悬停效果
+        accountItem.addEventListener('mouseenter', () => {
+            accountItem.style.transform = 'translateY(-3px)';
+            accountItem.style.boxShadow = '0 5px 15px rgba(0,0,0,0.15)';
+            accountItem.style.backgroundColor = '#f8f3e9';
+        });
+        
+        accountItem.addEventListener('mouseleave', () => {
+            accountItem.style.transform = 'translateY(0)';
+            accountItem.style.boxShadow = '0 3px 10px rgba(0,0,0,0.1)';
+            accountItem.style.backgroundColor = 'white';
+        });
+        
+        tiktokAccounts.appendChild(accountItem);
+    });
+    
+    contactTip.appendChild(tipTitle);
+    contactTip.appendChild(tiktokAccounts);
+    
+    customStepsContainer.appendChild(stepsTitle);
+    customStepsContainer.appendChild(stepsList);
+    customStepsContainer.appendChild(contactTip);
+    
+    profile.appendChild(customStepsContainer);
+    profile.appendChild(buttonContainer);
+    
+    // 为移动设备适配
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    if (mediaQuery.matches) {
+        // 在移动设备上，取消额外的左侧内边距
+        profile.style.paddingLeft = '20px';
+        
+        // 调整TikTok账号区域在移动设备上的显示
+        tiktokAccounts.style.flexDirection = 'column';
+        tiktokAccounts.style.alignItems = 'flex-start';
+        tiktokAccounts.style.gap = '10px';
+        
+        accounts.forEach((_account, index) => {
+            const accountItem = tiktokAccounts.children[index];
+            accountItem.style.width = '100%';
+            accountItem.style.justifyContent = 'flex-start';
+        });
+    }
+    
+    // 图片集部分
+    const gallery = document.createElement('div');
+    gallery.className = 'custom-gallery';
+    
+    const galleryContainer = document.createElement('div');
+    galleryContainer.className = 'gallery-container';
+    galleryContainer.style.display = 'flex';
+    galleryContainer.style.flexWrap = 'nowrap'; // 改为不换行，实现水平排列
+    galleryContainer.style.justifyContent = 'center';
+    galleryContainer.style.alignItems = 'center'; // 垂直居中对齐
+    galleryContainer.style.gap = '15px'; // 减小间距
+    galleryContainer.style.padding = '10px'; // 减小内边距
+    galleryContainer.style.height = '100%'; // 确保容器高度充满
+    galleryContainer.style.maxWidth = '95%'; // 限制最大宽度
+    
+    // 添加3张图片
+    for (let i = 1; i <= 3; i++) {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.style.backgroundImage = `url('img/专家/高佳颖${i}.jpg')`;
+        galleryItem.style.width = '28%'; // 略微减小宽度
+        galleryItem.style.height = '65%'; // 略微减小高度
+        galleryItem.style.backgroundSize = 'cover';
+        galleryItem.style.backgroundPosition = 'center';
+        galleryItem.style.borderRadius = '10px';
+        galleryItem.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)';
+        galleryItem.style.transition = 'all 0.5s ease';
+        
+        galleryItem.addEventListener('mouseenter', () => {
+            galleryItem.style.transform = 'scale(1.05)';
+            galleryItem.style.boxShadow = '0 12px 25px rgba(0,0,0,0.3)';
+        });
+        
+        galleryItem.addEventListener('mouseleave', () => {
+            galleryItem.style.transform = 'scale(1)';
+            galleryItem.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)';
+        });
+        
+        galleryContainer.appendChild(galleryItem);
+    }
+    
+    gallery.appendChild(galleryContainer);
+    
+    // 添加页面元素
     page.appendChild(gallery);
     page.appendChild(profile);
+    
     document.body.appendChild(page);
     return page;
 }
 
 function showCustomPage(page) {
-    page.classList.add('active');
-    // 初始化图片集交互
-    const galleryItems = page.querySelectorAll('.gallery-item');
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            item.style.transform = `scale(1.15) translateZ(0)`;
-            item.style.zIndex = 15;
-        });
-    });
+    // 添加短暂延迟，确保DOM更新
+    setTimeout(() => {
+        page.classList.add('active');
+    }, 50);
 }
